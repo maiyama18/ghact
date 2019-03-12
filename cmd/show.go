@@ -15,6 +15,14 @@ type Activity struct {
 	Count int
 }
 
+func (a *Activity) String() string {
+	date := strings.Split(a.Date, "-")
+	month := date[1]
+	day := date[2]
+
+	return fmt.Sprintf("%s/%s: %d contributions", month, day, a.Count)
+}
+
 var showCmd = &cobra.Command{
 	Use: "show",
 	Short: "Show number of activities",
