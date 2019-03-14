@@ -2,10 +2,14 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
+	"ghact/gh"
 	"github.com/spf13/cobra"
 )
 
-var filename string
+var client = gh.NewClient()
+
+var filepath string
 var token string
 
 var commitCmd = &cobra.Command{
@@ -18,12 +22,25 @@ var commitCmd = &cobra.Command{
 		return cobra.OnlyValidArgs(cmd, args)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
+		repo := args[0]
+		file, err := fetchFile(repo, filepath)
+		if err != nil {
+			fmt.Printf("failed to fetch file from github: %s\n", err.Error())
+			return
+		}
+
+		fmt.Println(file)
+
 		return
 	},
 }
 
 func init() {
-	showCmd.Flags().StringVarP(&filename, "file", "f", ".ghact", "filename to be updated")
-	showCmd.Flags().StringVarP(&token, "token", "t", "", "your private github token")
+	commitCmd.Flags().StringVarP(&filepath, "file", "f", ".ghact", "filepath to be updated")
+	commitCmd.Flags().StringVarP(&token, "token", "t", "", "your private github token")
 	_ = showCmd.MarkFlagRequired("token")
+}
+
+func fetchFile(repo, filepath string) (*GithubFile, error) {
+
 }
