@@ -36,10 +36,6 @@ var showCmd = &cobra.Command{
 		return cobra.OnlyValidArgs(cmd, args)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) == 0 {
-			fmt.Printf("username should be provided as an arg")
-			return
-		}
 		if period != "week" && period != "month" && period != "year" {
 			fmt.Printf("period option should be one of week/month/year")
 			return
@@ -107,9 +103,9 @@ func extractActivities(html, period string) []*Activity {
 
 	switch period {
 	case "week":
-		activities = activities[len(activities)-7 : len(activities)]
+		activities = activities[len(activities)-7:]
 	case "month":
-		activities = activities[len(activities)-30 : len(activities)]
+		activities = activities[len(activities)-30:]
 	}
 
 	return activities

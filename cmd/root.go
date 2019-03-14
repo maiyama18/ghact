@@ -23,6 +23,7 @@ func init() {
 	cobra.OnInitialize()
 
 	rootCmd.AddCommand(showCmd)
+	rootCmd.AddCommand(commitCmd)
 }
 
 func Execute() {
