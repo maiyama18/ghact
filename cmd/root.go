@@ -11,9 +11,9 @@ const longDesc = `ghact is a CLI tool for viewing and manipulating your github a
 documentation is available on https://github.com/muiscript/ghact`
 
 var rootCmd = &cobra.Command{
-	Use: "ghact",
+	Use:   "ghact",
 	Short: shortDesc,
-	Long: longDesc,
+	Long:  longDesc,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("hello, ghact!")
 	},
@@ -21,6 +21,7 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	cobra.OnInitialize()
+
 	rootCmd.AddCommand(showCmd)
 }
 

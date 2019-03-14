@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
 	"io/ioutil"
@@ -10,8 +11,10 @@ import (
 	"strings"
 )
 
+var period string
+
 type Activity struct {
-	Date string
+	Date  string
 	Count int
 }
 
@@ -24,11 +27,21 @@ func (a *Activity) String() string {
 }
 
 var showCmd = &cobra.Command{
-	Use: "show",
+	Use:   "show",
 	Short: "Show number of activities",
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) != 1 {
+			return errors.New("show requires github username")
+		}
+		return cobra.OnlyValidArgs(cmd, args)
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			fmt.Printf("username should be provided as an arg")
+			return
+		}
+		if period != "week" && period != "month" && period != "year" {
+			fmt.Printf("period option should be one of week/month/year")
 			return
 		}
 
@@ -38,11 +51,15 @@ var showCmd = &cobra.Command{
 			fmt.Println(err)
 		}
 
-		activities := extractActivities(html)
+		activities := extractActivities(html, period)
 		for _, activity := range activities {
 			fmt.Println(activity)
 		}
 	},
+}
+
+func init() {
+	showCmd.Flags().StringVarP(&period, "period", "p", "week", "period to show contributions (week/month/year)")
 }
 
 func fetchActivitiesHTML(user string) (string, error) {
@@ -61,7 +78,7 @@ func fetchActivitiesHTML(user string) (string, error) {
 	return string(bytes), nil
 }
 
-func extractActivities(html string) []*Activity {
+func extractActivities(html, period string) []*Activity {
 	activities := make([]*Activity, 0)
 
 	for _, line := range strings.Split(html, "\n") {
@@ -86,6 +103,13 @@ func extractActivities(html string) []*Activity {
 
 			activities = append(activities, activity)
 		}
+	}
+
+	switch period {
+	case "week":
+		activities = activities[len(activities)-7 : len(activities)]
+	case "month":
+		activities = activities[len(activities)-30 : len(activities)]
 	}
 
 	return activities
