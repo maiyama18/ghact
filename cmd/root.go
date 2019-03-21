@@ -47,9 +47,10 @@ func init() {
 		ghClient = gh.NewClient()
 	})
 
-	rootCmd.AddCommand(showCmd)
 	rootCmd.AddCommand(loginCmd)
 	rootCmd.AddCommand(configCmd)
+	rootCmd.AddCommand(showCmd)
+	rootCmd.AddCommand(commitCmd)
 }
 
 func Execute() {
