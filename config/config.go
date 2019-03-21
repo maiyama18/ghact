@@ -47,6 +47,14 @@ func (c *Config) Set(key, val string) error {
 	return nil
 }
 
+func (c *Config) Keys() []string {
+	var keys []string
+	for key, _ := range c.vars {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
 func (c *Config) save() error {
 	b, err := json.Marshal(c.vars)
 	if err != nil {

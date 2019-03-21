@@ -49,6 +49,7 @@ func init() {
 
 	rootCmd.AddCommand(showCmd)
 	rootCmd.AddCommand(loginCmd)
+	rootCmd.AddCommand(configCmd)
 }
 
 func Execute() {
