@@ -41,9 +41,11 @@ func (c *Client) Request(req *http.Request, body interface{}) error {
 	if err := json.Unmarshal(b, body); err != nil {
 		return err
 	}
+
+	return nil
 }
 
-func (c *Client) GetContents(filepath string) (*File, error) {
-	url := *c.baseURL
-	url.Path = "/repos/"
-}
+//func (c *Client) GetContents(filepath string) (*File, error) {
+//	url := *c.baseURL
+//	url.Path = "/repos/"
+//}
