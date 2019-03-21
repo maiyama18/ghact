@@ -15,6 +15,10 @@ var loginCmd = &cobra.Command{
 		if err := ghClient.Login(username, token); err != nil {
 			exit(1, "failed to login: %v\n", err)
 		}
+
+		_ = conf.Set("username", username)
+		_ = conf.Set("token", token)
+
 		fmt.Printf("successfully logged in with user: %s\n", username)
 	},
 }
