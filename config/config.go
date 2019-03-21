@@ -49,7 +49,7 @@ func (c *Config) Set(key, val string) error {
 
 func (c *Config) Keys() []string {
 	var keys []string
-	for key, _ := range c.vars {
+	for key := range c.vars {
 		keys = append(keys, key)
 	}
 	return keys
