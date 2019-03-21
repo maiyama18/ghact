@@ -37,14 +37,13 @@ var showCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if period != "week" && period != "month" && period != "year" {
-			fmt.Printf("period option should be one of week/month/year")
-			return
+			exit(1, "period option should be one of week/month/year")
 		}
 
 		user := args[0]
 		html, err := fetchActivitiesHTML(user)
 		if err != nil {
-			fmt.Println(err)
+			exit(1, err.Error())
 		}
 
 		activities := extractActivities(html, period)

@@ -10,6 +10,13 @@ import (
 	"path"
 )
 
+func exit(code int, format string, a ...interface{}) {
+	fmt.Printf(format, a)
+	fmt.Println()
+
+	os.Exit(code)
+}
+
 const shortDesc = "ghact is a CLI tool for viewing and manipulating your github activity"
 const longDesc = `ghact is a CLI tool for viewing and manipulating your github activity.
 documentation is available on https://github.com/muiscript/ghact`
@@ -30,14 +37,12 @@ func init() {
 	cobra.OnInitialize(func() {
 		usr, err := user.Current()
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			exit(1, err.Error())
 		}
 		configJsonPath := path.Join(usr.HomeDir, ".ghact.json")
 
 		if conf, err = config.New(configJsonPath); err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			exit(1, err.Error())
 		}
 		ghClient = gh.NewClient()
 	})
@@ -48,7 +53,6 @@ func init() {
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		exit(1, err.Error())
 	}
 }

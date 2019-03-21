@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var username string
@@ -14,8 +13,7 @@ var loginCmd = &cobra.Command{
 	Short: "Login to GitHub",
 	Run: func(cmd *cobra.Command, args []string) {
 		if err := ghClient.Login(username, token); err != nil {
-			fmt.Printf("failed to login: %v\n", err)
-			os.Exit(1)
+			exit(1, "failed to login: %v\n", err)
 		}
 		fmt.Printf("successfully logged in with user: %s\n", username)
 	},
@@ -24,6 +22,6 @@ var loginCmd = &cobra.Command{
 func init() {
 	loginCmd.Flags().StringVarP(&username, "username", "u", "", "github username")
 	loginCmd.Flags().StringVarP(&token, "token", "t", "", "github personal token")
-	loginCmd.MarkFlagRequired("username")
-	loginCmd.MarkFlagRequired("token")
+	_ = loginCmd.MarkFlagRequired("username")
+	_ = loginCmd.MarkFlagRequired("token")
 }
