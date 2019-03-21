@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"ghact/gh"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -9,6 +10,8 @@ import (
 const shortDesc = "ghact is a CLI tool for viewing and manipulating your github activity"
 const longDesc = `ghact is a CLI tool for viewing and manipulating your github activity.
 documentation is available on https://github.com/muiscript/ghact`
+
+var ghClient = gh.NewClient()
 
 var rootCmd = &cobra.Command{
 	Use:   "ghact",
